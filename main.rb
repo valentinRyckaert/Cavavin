@@ -1,5 +1,11 @@
+require 'bundler/setup'
 require 'sinatra'
+require 'csv'
 
 get '/' do
-  erb :index
+    erb :index
+end
+
+get '/search' do
+    
 end
