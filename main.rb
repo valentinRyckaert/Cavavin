@@ -17,26 +17,27 @@ get '/' do
     erb :index, locals: { action: nil, listeVins: nil, nouveauVin: nil }
 end
 
-get '/search/:action' do |action|
+get '/search/consume' do
     listeVins = []
     csvData = CSV.read("db/database.csv", headers: true, skip_blanks: true)
-    if action === 'consume'
-        csvData.each do |row|
-            if row[params["searchType"]].include?(params['query'])
-                listeVins.push(row)
-            end
+    csvData.each do |row|
+        if row[params["searchType"]].include?(params['query'])
+            listeVins.push(row)
         end
-    elsif action === 'add'
-        csvData.each do |row|
-            if row["appelation"].include?(params['appelation']) && row["annee"].to_i === params["annee"].to_i
-                listeVins.push(row)
-            end
+    end
+    erb :index, locals: { action: 'consume', listeVins: listeVins, nouveauVin: nil }
+end
+
+get '/search/add' do
+    listeVins = []
+    csvData = CSV.read("db/database.csv", headers: true, skip_blanks: true)
+    csvData.each do |row|
+        if row["appelation"].include?(params['appelation']) && row["annee"].to_i === params["annee"].to_i
+            listeVins.push(row)
         end
-    else
-        halt 404, 'no route found' 
     end
     erb :index, locals: {
-        action: action,
+        action: 'add',
         listeVins: listeVins,
         nouveauVin: {
             :appelation => params['appelation'],
