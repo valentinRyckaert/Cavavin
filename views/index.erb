@@ -19,7 +19,15 @@
                 <h5>Consommer un vin</h5>
                 </div>
                 <div class="card-body">
-                <form action="" method="get">
+                <form action="/search" method="get">
+                    <div class="input-group mb-3">
+                        <select class="form-select" name="searchType" aria-label="Default select example">
+                            <option value="appelation" selected>rechercher l'appelation</option>
+                            <option value="robe">rechercher la robe</option>
+                            <option value="region">rechercher la région</option>
+                            <option value="domaine">rechercher le domaine</option>
+                        </select>
+                    </div>
                     <div class="input-group mb-3">
                     <input
                         type="text"
@@ -52,6 +60,38 @@
             </div>
             </div>
         </div>
+    </div>
+    <div>
+        <% if data %>
+        <div class="card mx-5 mt-4">
+            <div class="card-body">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">robe</th>
+                            <th scope="col">région</th>
+                            <th scope="col">appelation</th>
+                            <th scope="col">domaine</th>
+                            <th scope="col">année</th>
+                            <th scope="col">nombre de bouteilles</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% data.each do |vin| %>
+                            <tr>
+                                <td><%= vin["robe"] %></td>
+                                <td><%= vin["region"] %></td>
+                                <td><%= vin["appelation"] %></td>
+                                <td><%= vin["domaine"] %></td>
+                                <td><%= vin["annee"] %></td>
+                                <td><%= vin["nbBouteilles"] %></td>
+                            </tr>
+                        <% end %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <% end %>
     </div>
 </body>
 </html>
