@@ -9,7 +9,7 @@ end
 get '/search' do
     listeVins = []
     CSV.foreach("db/database.csv", headers: true, skip_blanks: true) do |row|
-        if row["appelation"].include?(params['query'])
+        if row[params["searchType"]].include?(params['query'])
             listeVins.push(row)
         end
     end
