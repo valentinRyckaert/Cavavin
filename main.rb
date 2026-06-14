@@ -28,6 +28,7 @@ get '/' do
 end
 
 get '/search/consume' do
+    createDBIfNotExists
     listeVins = []
     csvData = CSV.read("database.csv", headers: true, skip_blanks: true)
     csvData.each do |row|
@@ -39,6 +40,7 @@ get '/search/consume' do
 end
 
 get '/search/add' do
+    createDBIfNotExists
     listeVins = []
     csvData = CSV.read("database.csv", headers: true, skip_blanks: true)
     csvData.each do |row|
@@ -57,6 +59,7 @@ get '/search/add' do
 end
 
 post '/new' do
+    createDBIfNotExists
     CSV.open("database.csv", 'a') do |db|
         db << [
             get_new_id,
