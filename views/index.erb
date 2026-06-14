@@ -19,7 +19,7 @@
                 <h5>Consommer un vin</h5>
                 </div>
                 <div class="card-body">
-                <form action="/search" method="get">
+                <form action="/search/consume" method="get">
                     <div class="input-group mb-3">
                         <select class="form-select" name="searchType" aria-label="Default select example">
                             <option value="appelation" selected>rechercher l'appelation</option>
@@ -55,14 +55,36 @@
                 <h5>Ajouter une bouteille</h5>
                 </div>
                 <div class="card-body">
-
+                    <form action="/search/add" method="get">
+                        <div class="input-group mb-3">
+                            <input
+                                type="text"
+                                class="form-control"
+                                name="appelation"
+                                placeholder="Rentrer l'appelation de la bouteille..."
+                                aria-label="Rentrer l'appelation de la bouteille"
+                            >
+                        </div>
+                        <div class="input-group mb-3">
+                            <input
+                                type="number"
+                                class="form-control"
+                                name="annee"
+                                placeholder="Rentrer l'année de la bouteille..."
+                                aria-label="Rentrer l'année de la bouteille"
+                            >
+                        </div>
+                        <button class="btn btn-outline-secondary" type="submit">
+                            <i class="bi bi-search"></i> Rechercher
+                        </button>
+                    </form>
                 </div>
             </div>
             </div>
         </div>
     </div>
     <div>
-        <% if defined?(listeVins) != nil %>
+        <% if listeVins != nil %>
             <div class="card mx-5 mt-4">
                 <div class="card-body">
                     <table class="table table-striped">
