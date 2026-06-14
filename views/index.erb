@@ -62,35 +62,35 @@
         </div>
     </div>
     <div>
-        <% if data %>
-        <div class="card mx-5 mt-4">
-            <div class="card-body">
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th scope="col">robe</th>
-                            <th scope="col">région</th>
-                            <th scope="col">appelation</th>
-                            <th scope="col">domaine</th>
-                            <th scope="col">année</th>
-                            <th scope="col">nombre de bouteilles</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <% data.each do |vin| %>
+        <% if defined?(listeVins) != nil %>
+            <div class="card mx-5 mt-4">
+                <div class="card-body">
+                    <table class="table table-striped">
+                        <thead>
                             <tr>
-                                <td><%= vin["robe"] %></td>
-                                <td><%= vin["region"] %></td>
-                                <td><%= vin["appelation"] %></td>
-                                <td><%= vin["domaine"] %></td>
-                                <td><%= vin["annee"] %></td>
-                                <td><%= vin["nbBouteilles"] %></td>
+                                <th scope="col">robe</th>
+                                <th scope="col">région</th>
+                                <th scope="col">appelation</th>
+                                <th scope="col">domaine</th>
+                                <th scope="col">année</th>
+                                <th scope="col">nombre de bouteilles</th>
                             </tr>
-                        <% end %>
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            <% listeVins.each do |vin| %>
+                                <tr>
+                                    <td><%= vin["robe"] %></td>
+                                    <td><%= vin["region"] %></td>
+                                    <td><%= vin["appelation"] %></td>
+                                    <td><%= vin["domaine"] %></td>
+                                    <td><%= vin["annee"] %></td>
+                                    <td><%= vin["nbBouteilles"] %></td>
+                                </tr>
+                            <% end %>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-        </div>
         <% end %>
     </div>
 </body>

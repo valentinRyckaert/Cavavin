@@ -13,5 +13,5 @@ get '/search' do
             listeVins.push(row)
         end
     end
-    erb :index, locals: { data: listeVins }
+    erb :index, locals: { listeVins: listeVins }
 end
