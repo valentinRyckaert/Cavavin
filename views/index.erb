@@ -71,7 +71,7 @@
                                 class="form-control"
                                 name="annee"
                                 placeholder="Rentrer l'année de la bouteille..."
-                                aria-label="Rentrer l'année de la bouteille"
+    
                             >
                         </div>
                         <button class="btn btn-outline-secondary" type="submit">
@@ -83,37 +83,108 @@
             </div>
         </div>
     </div>
-    <div>
-        <% if listeVins != nil %>
-            <div class="card mx-5 mt-4">
-                <div class="card-body">
-                    <table class="table table-striped">
-                        <thead>
+    <% if listeVins != nil %>
+        <div class="card mx-5 mt-4">
+            <div class="card-body">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">robe</th>
+                            <th scope="col">région</th>
+                            <th scope="col">appelation</th>
+                            <th scope="col">domaine</th>
+                            <th scope="col">année</th>
+                            <th scope="col">nombre de bouteilles</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% listeVins.each do |vin| %>
                             <tr>
-                                <th scope="col">robe</th>
-                                <th scope="col">région</th>
-                                <th scope="col">appelation</th>
-                                <th scope="col">domaine</th>
-                                <th scope="col">année</th>
-                                <th scope="col">nombre de bouteilles</th>
+                                <td><%= vin["robe"] %></td>
+                                <td><%= vin["region"] %></td>
+                                <td><%= vin["appelation"] %></td>
+                                <td><%= vin["domaine"] %></td>
+                                <td><%= vin["annee"] %></td>
+                                <td><%= vin["nbBouteilles"] %></td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            <% listeVins.each do |vin| %>
-                                <tr>
-                                    <td><%= vin["robe"] %></td>
-                                    <td><%= vin["region"] %></td>
-                                    <td><%= vin["appelation"] %></td>
-                                    <td><%= vin["domaine"] %></td>
-                                    <td><%= vin["annee"] %></td>
-                                    <td><%= vin["nbBouteilles"] %></td>
-                                </tr>
-                            <% end %>
-                        </tbody>
-                    </table>
+                        <% end %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    <% end %>
+
+    <% if action === 'add' %>
+        <div class="card mx-5 mt-4">
+            <div class="card-body">
+                <h4>Si vous ne trouvez pas votre bouteille parmis celles existantes, ajoutez en une :</h4>
+                <div class="card-body">
+                    <form action="/new" method="post">
+                        <div class="input-group mb-3">
+                            <input
+                                type="text"
+                                class="form-control"
+                                name="robe"
+                                placeholder="robe"
+                                required
+                            >
+                        </div>
+                        <div class="input-group mb-3">
+                            <input
+                                type="text"
+                                class="form-control"
+                                name="region"
+                                placeholder="région"
+                                required
+                            >
+                        </div>
+                        <div class="input-group mb-3">
+                            <input
+                                type="text"
+                                class="form-control"
+                                name="appelation"
+                                placeholder="appelation"
+                                aria-label="Rentrer l'appelation de la bouteille"
+                                value="<%= nouveauVin[:appelation] %>"
+                                required
+                            >
+                        </div>
+                        <div class="input-group mb-3">
+                            <input
+                                type="text"
+                                class="form-control"
+                                name="domaine"
+                                placeholder="domaine"
+                                required
+                            >
+                        </div>
+                        <div class="input-group mb-3">
+                            <input
+                                type="number"
+                                class="form-control"
+                                name="annee"
+                                placeholder="année"
+                                value=<%= nouveauVin[:annee] %>
+                                required
+                            >
+                        </div>
+                        <div class="input-group mb-3">
+                            <input
+                                type="number"
+                                class="form-control"
+                                name="nbBouteilles"
+                                placeholder="quantité"
+                                value=1
+                                required
+                            >
+                        </div>
+                        <button class="btn btn-outline-success" type="submit">
+                            <i class="bi bi-search"></i> Créer
+                        </button>
+                    </form>
                 </div>
             </div>
-        <% end %>
-    </div>
+        </div>
+    <% end %>
 </body>
 </html>
