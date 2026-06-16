@@ -70,7 +70,7 @@ post '/changequantity/:action' do |action|
     CSV.open("database.csv", "wb") do |csv|
         csv << rows.headers
         rows.each do |row|
-            csv << row.fields
+            csv << row.fields if row["nbBouteilles"].to_i > 0
         end
     end
     erb :index, locals: { action: nil, listeVins: nil, nouveauVin: nil }
