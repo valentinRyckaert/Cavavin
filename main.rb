@@ -14,7 +14,7 @@ helpers do
 
     def get_new_id
         if File.exist?("database.csv") && !File.empty?("database.csv")
-            last_row = CSV.read("database.csv", headers: true).to_a.last
+            last_row = CSV.read("database.csv", headers: true, skip_blanks: true).to_a.last
             return last_row[0].to_i + 1
         else
             return 1 # Start with ID 1 if the file is empty or doesn't exist
@@ -44,7 +44,7 @@ get '/search/add' do
     listeVins = []
     csvData = CSV.read("database.csv", headers: true, skip_blanks: true)
     csvData.each do |row|
-        if row["appelation"].include?(params['appelation']) && row["annee"].to_i === params["annee"].to_i
+        if row["appelation"].include?(params['appelation']) && row["annee"].to_i == params["annee"].to_i
             listeVins.push(row)
         end
     end
@@ -57,6 +57,25 @@ get '/search/add' do
         }
     }
 end
+
+post '/changequantity/:action' do |action|
+    createDBIfNotExists
+    rows = CSV.read("database.csv", headers: true, skip_blanks: true)
+    rows.each do |row|
+        p row["id"], params["vinId"]
+        if row["id"].to_i == params["vinId"].to_i
+            row["nbBouteilles"] = action.to_i == 1 ? row["nbBouteilles"].to_i + params["nbBouteilles"].to_i : row["nbBouteilles"].to_i - params["nbBouteilles"].to_i
+        end
+    end
+    CSV.open("database.csv", "wb") do |csv|
+        csv << rows.headers
+        rows.each do |row|
+            csv << row.fields
+        end
+    end
+    erb :index, locals: { action: nil, listeVins: nil, nouveauVin: nil }
+end
+
 
 post '/new' do
     createDBIfNotExists
