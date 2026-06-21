@@ -46,3 +46,11 @@ ruby web.rb
 ruby app.rb # in another shell
 ```
 Web app is accessible at http://localhost:4567.
+
+## Features to code
+- makes code independent from database
+- web security
+- translation
+- dark theme
+- web to desktop security (token)
+- migrate to my own CSS/JS
