@@ -21,7 +21,7 @@ helpers do
 end
 
 get '/' do
-    erb :index, locals: { action: nil, listeVins: settings.WineDAO.all, nouveauVin: nil }
+    erb :index, locals: { action: 'consume', listeVins: settings.WineDAO.all, nouveauVin: nil }
 end
 
 get '/search/consume' do
@@ -54,7 +54,7 @@ end
 post '/changequantity/:action' do |action|
     settings.WineDAO.all.each do |wine|
         if wine.id == params["vinId"].to_i
-            wine.nbBottles = action.to_i ? 
+            wine.nbBottles = action == "add" ? 
                 wine.nbBottles.to_i + params["nbBottles"].to_i :
                 wine.nbBottles.to_i - params["nbBottles"].to_i
             settings.WineDAO.createOrUpdate(wine)

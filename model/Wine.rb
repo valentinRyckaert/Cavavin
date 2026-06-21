@@ -8,7 +8,7 @@ class Wine
         @appearance = appearance
         @region = region
         @estate = estate
-        @vintage = vintage
+        @vintage = vintage.to_i
         @nbBottles = nbBottles.to_i
     end
 end
