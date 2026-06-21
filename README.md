@@ -54,3 +54,4 @@ Web app is accessible at http://localhost:4567.
 - dark theme
 - web to desktop security (token)
 - migrate to my own CSS/JS
+- scripts for install/launch (web, web/desktop, desktop only, linux, windows...)
