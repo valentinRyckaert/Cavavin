@@ -60,7 +60,7 @@ post '/changequantity/:action' do |action|
             settings.WineDAO.createOrUpdate(wine)
         end
     end
-    erb :index, locals: { action: nil, listeVins: nil, nouveauVin: nil }
+    redirect '/'
 end
 
 
@@ -74,5 +74,5 @@ post '/new' do
         params["vintage"],
         params["nbBottles"].to_i
     ))
-    erb :index, locals: { action: nil, listeVins: nil, nouveauVin: nil }
+    redirect '/'
 end
