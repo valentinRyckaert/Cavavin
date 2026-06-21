@@ -22,10 +22,10 @@
                 <form action="/search/consume" method="get">
                     <div class="input-group mb-3">
                         <select class="form-select" name="searchType" aria-label="Default select example">
-                            <option value="appelation" selected>rechercher l'appelation</option>
-                            <option value="robe">rechercher la robe</option>
+                            <option value="appellation" selected>rechercher l'appellation</option>
+                            <option value="appearance">rechercher la appearance</option>
                             <option value="region">rechercher la région</option>
-                            <option value="domaine">rechercher le domaine</option>
+                            <option value="estate">rechercher le estate</option>
                         </select>
                     </div>
                     <div class="input-group mb-3">
@@ -60,16 +60,16 @@
                             <input
                                 type="text"
                                 class="form-control"
-                                name="appelation"
-                                placeholder="Rentrer l'appelation de la bouteille..."
-                                aria-label="Rentrer l'appelation de la bouteille"
+                                name="appellation"
+                                placeholder="Rentrer l'appellation de la bouteille..."
+                                aria-label="Rentrer l'appellation de la bouteille"
                             >
                         </div>
                         <div class="input-group mb-3">
                             <input
                                 type="number"
                                 class="form-control"
-                                name="annee"
+                                name="vintage"
                                 placeholder="Rentrer l'année de la bouteille..."
     
                             >
@@ -89,33 +89,33 @@
                 <table class="table table-striped">
                     <thead>
                         <tr>
-                            <th scope="col">robe</th>
+                            <th scope="col">appearance</th>
                             <th scope="col">région</th>
-                            <th scope="col">appelation</th>
-                            <th scope="col">domaine</th>
+                            <th scope="col">appellation</th>
+                            <th scope="col">estate</th>
                             <th scope="col">année</th>
                             <th scope="col">nombre de bouteilles</th>
                             <th scope="col">actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <% listeVins.each do |vin| %>
+                        <% listeVins.each do |wine| %>
                             <tr>
-                                <td><%= vin["robe"] %></td>
-                                <td><%= vin["region"] %></td>
-                                <td><%= vin["appelation"] %></td>
-                                <td><%= vin["domaine"] %></td>
-                                <td><%= vin["annee"] %></td>
-                                <td><%= vin["nbBouteilles"] %></td>
+                                <td><%= wine.appearance %></td>
+                                <td><%= wine.region %></td>
+                                <td><%= wine.appellation %></td>
+                                <td><%= wine.estate %></td>
+                                <td><%= wine.vintage %></td>
+                                <td><%= wine.nbBottles %></td>
                                 <td>
                                     <form action="/changequantity/<%= action == "add" %>" method="post">
                                         <div class="input-group mb-3">
-                                            <input type="number" name="nbBouteilles" class="form-control" value=1 size=4>
+                                            <input type="number" name="nbBottles" class="form-control" value=1 size=4>
                                             <button class="btn <%= action == "add" ? 'btn-success' : 'btn-warning'%> btn-sm" id="basic-addon2">
                                                 <%= action == "add" ? 'ajouter' : 'consommer'%>
                                             </button>
                                         </div>
-                                        <input value=<%= vin["id"] %> name="vinId" type="hidden" />
+                                        <input value=<%= wine.id %> name="vinId" type="hidden" />
                                     </form>
                                 </td>
                             </tr>
@@ -136,8 +136,8 @@
                             <input
                                 type="text"
                                 class="form-control"
-                                name="robe"
-                                placeholder="robe"
+                                name="appearance"
+                                placeholder="appearance"
                                 required
                             >
                         </div>
@@ -154,10 +154,10 @@
                             <input
                                 type="text"
                                 class="form-control"
-                                name="appelation"
-                                placeholder="appelation"
-                                aria-label="Rentrer l'appelation de la bouteille"
-                                value="<%= nouveauVin[:appelation] %>"
+                                name="appellation"
+                                placeholder="appellation"
+                                aria-label="Rentrer l'appellation de la bouteille"
+                                value="<%= nouveauVin[:appellation] %>"
                                 required
                             >
                         </div>
@@ -165,8 +165,8 @@
                             <input
                                 type="text"
                                 class="form-control"
-                                name="domaine"
-                                placeholder="domaine"
+                                name="estate"
+                                placeholder="estate"
                                 required
                             >
                         </div>
@@ -174,9 +174,9 @@
                             <input
                                 type="number"
                                 class="form-control"
-                                name="annee"
+                                name="vintage"
                                 placeholder="année"
-                                value=<%= nouveauVin[:annee] %>
+                                value=<%= nouveauVin[:vintage] %>
                                 required
                             >
                         </div>
@@ -184,7 +184,7 @@
                             <input
                                 type="number"
                                 class="form-control"
-                                name="nbBouteilles"
+                                name="nbBottles"
                                 placeholder="quantité"
                                 value=1
                                 required

@@ -1,16 +1,14 @@
 require 'bundler/setup'
 require 'sinatra'
 require 'csv'
+require_relative 'model/WineCSVDAO'
+require_relative 'model/Wine'
+
+configure do
+    set :WineDAO, WineCSVDAO.new("database.csv")
+end
 
 helpers do
-
-    def createDBIfNotExists
-        if !File.exist?("database.csv")
-            CSV.open("database.csv", "wb") do |csv|
-                csv << ["id", "appelation", "robe", "region", "domaine", "annee", "nbBouteilles"]
-            end
-        end
-    end
 
     def get_new_id
         if File.exist?("database.csv") && !File.empty?("database.csv")
@@ -23,54 +21,43 @@ helpers do
 end
 
 get '/' do
-    createDBIfNotExists
-    erb :index, locals: { action: nil, listeVins: nil, nouveauVin: nil }
+    erb :index, locals: { action: nil, listeVins: settings.WineDAO.all, nouveauVin: nil }
 end
 
 get '/search/consume' do
-    createDBIfNotExists
     listeVins = []
-    csvData = CSV.read("database.csv", headers: true, skip_blanks: true)
-    csvData.each do |row|
-        if row[params["searchType"]].include?(params['query'])
-            listeVins.push(row)
+    settings.WineDAO.all.each do |wine|
+        if wine.instance_variable_get("@#{params["searchType"]}").include?(params['query'])
+            listeVins.push(wine)
         end
     end
     erb :index, locals: { action: 'consume', listeVins: listeVins, nouveauVin: nil }
 end
 
 get '/search/add' do
-    createDBIfNotExists
     listeVins = []
-    csvData = CSV.read("database.csv", headers: true, skip_blanks: true)
-    csvData.each do |row|
-        if row["appelation"].include?(params['appelation']) && row["annee"].to_i == params["annee"].to_i
-            listeVins.push(row)
+    settings.WineDAO.all.each do |wine|
+        if wine.appellation.include?(params['appellation']) && wine.vintage == params["vintage"].to_i
+            listeVins.push(wine)
         end
     end
     erb :index, locals: {
         action: 'add',
         listeVins: listeVins,
         nouveauVin: {
-            :appelation => params['appelation'],
-            :annee => params["annee"].to_i
+            :appellation => params['appellation'],
+            :vintage => params["vintage"].to_i
         }
     }
 end
 
 post '/changequantity/:action' do |action|
-    createDBIfNotExists
-    rows = CSV.read("database.csv", headers: true, skip_blanks: true)
-    rows.each do |row|
-        p row["id"], params["vinId"]
-        if row["id"].to_i == params["vinId"].to_i
-            row["nbBouteilles"] = action.to_i == 1 ? row["nbBouteilles"].to_i + params["nbBouteilles"].to_i : row["nbBouteilles"].to_i - params["nbBouteilles"].to_i
-        end
-    end
-    CSV.open("database.csv", "wb") do |csv|
-        csv << rows.headers
-        rows.each do |row|
-            csv << row.fields if row["nbBouteilles"].to_i > 0
+    settings.WineDAO.all.each do |wine|
+        if wine.id == params["vinId"].to_i
+            wine.nbBottles = action.to_i ? 
+                wine.nbBottles.to_i + params["nbBottles"].to_i :
+                wine.nbBottles.to_i - params["nbBottles"].to_i
+            settings.WineDAO.createOrUpdate(wine)
         end
     end
     erb :index, locals: { action: nil, listeVins: nil, nouveauVin: nil }
@@ -78,17 +65,14 @@ end
 
 
 post '/new' do
-    createDBIfNotExists
-    CSV.open("database.csv", 'a') do |db|
-        db << [
-            get_new_id,
-            params["appelation"],
-            params["robe"],
-            params["region"],
-            params["domaine"],
-            params["annee"],
-            params["nbBouteilles"].to_i
-        ]
-    end
+    settings.WineDAO.createOrUpdate(Wine.new(
+        get_new_id,
+        params["appellation"],
+        params["appearance"],
+        params["region"],
+        params["estate"],
+        params["vintage"],
+        params["nbBottles"].to_i
+    ))
     erb :index, locals: { action: nil, listeVins: nil, nouveauVin: nil }
 end
