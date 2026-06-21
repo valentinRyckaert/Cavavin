@@ -1,10 +1,12 @@
 require 'gtk3'
 require 'webkit2-gtk'
+require 'dotenv'
 
 
 class Desktop
 
   def initialize
+    Dotenv.load('.env')
     @app = Gtk::Application.new("org.example.cavavin", :flags_none)
 
     @app.signal_connect("activate") do |application|
@@ -15,7 +17,7 @@ class Desktop
 
       web_view = WebKit2Gtk::WebView.new
 
-      web_view.load_uri("http://localhost:9292")
+      web_view.load_uri("http://#{ENV["WEBAPP_IP"]}:#{ENV["WEBAPP_PORT"]}")
 
       window.add(web_view)
 

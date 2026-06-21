@@ -3,19 +3,20 @@ require 'sinatra'
 require 'csv'
 require_relative 'model/WineCSVDAO'
 require_relative 'model/Wine'
-
+require 'dotenv'
 
 class WebApp < Sinatra::Base
 
     configure do
-        set :WineDAO, WineCSVDAO.new("database.csv")
+        Dotenv.load('.env')
+        set :WineDAO, WineCSVDAO.new(ENV["DB_PATH"])
     end
 
     helpers do
 
         def get_new_id
-            if File.exist?("database.csv") && !File.empty?("database.csv")
-                last_row = CSV.read("database.csv", headers: true, skip_blanks: true).to_a.last
+            if File.exist?(ENV["DB_PATH"]) && !File.empty?(ENV["DB_PATH"])
+                last_row = CSV.read(ENV["DB_PATH"], headers: true, skip_blanks: true).to_a.last
                 return last_row[0].to_i + 1
             else
                 return 1 # Start with ID 1 if the file is empty or doesn't exist

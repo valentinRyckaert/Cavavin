@@ -40,10 +40,18 @@ Cavavin uses a CSV file as database:
 touch database.csv # in the root directory
 ```
 
+#### Create .env file
+```
+DB_PATH="database.csv"
+
+WEBAPP_IP="127.0.0.1"
+WEBAPP_PORT=9292
+```
+
 #### Launch
 ```shell
-ruby web.rb
-ruby app.rb # in another shell
+rackup # web app
+ruby app/Desktop.rb # in another shell
 ```
 Web app is accessible at http://localhost:4567.
 
