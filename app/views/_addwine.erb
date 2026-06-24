@@ -1,0 +1,70 @@
+<div class="card mx-5 mt-4">
+    <div class="card-body">
+        <h4>Si vous ne trouvez pas votre bouteille parmis celles existantes, ajoutez en une :</h4>
+        <div class="card-body">
+            <form action="/new" method="post">
+                <div class="input-group mb-3">
+                    <input
+                        type="text"
+                        class="form-control"
+                        name="appearance"
+                        placeholder="appearance"
+                        required
+                    >
+                </div>
+                <div class="input-group mb-3">
+                    <input
+                        type="text"
+                        class="form-control"
+                        name="region"
+                        placeholder="région"
+                        required
+                    >
+                </div>
+                <div class="input-group mb-3">
+                    <input
+                        type="text"
+                        class="form-control"
+                        name="appellation"
+                        placeholder="appellation"
+                        aria-label="Rentrer l'appellation de la bouteille"
+                        value="<%= nouveauVin[:appellation] %>"
+                        required
+                    >
+                </div>
+                <div class="input-group mb-3">
+                    <input
+                        type="text"
+                        class="form-control"
+                        name="estate"
+                        placeholder="estate"
+                        required
+                    >
+                </div>
+                <div class="input-group mb-3">
+                    <input
+                        type="number"
+                        class="form-control"
+                        name="vintage"
+                        placeholder="année"
+                        value=<%= nouveauVin[:vintage] %>
+                        required
+                    >
+                </div>
+                <div class="input-group mb-3">
+                    <input
+                        type="number"
+                        class="form-control"
+                        name="nbBottles"
+                        placeholder="quantité"
+                        value=1
+                        required
+                    >
+                </div>
+                <button class="btn btn-outline-success" type="submit">
+                    <i class="bi bi-search"></i> Créer
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
