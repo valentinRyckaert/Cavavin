@@ -5,9 +5,11 @@ require_relative 'model/WineCSVDAO'
 require_relative 'model/Wine'
 require 'dotenv'
 
+
 class WebApp < Sinatra::Base
 
     configure do
+        set :views, File.expand_path('../views', __FILE__)
         Dotenv.load('.env')
         set :WineDAO, WineCSVDAO.new(ENV["DB_PATH"])
     end
@@ -81,3 +83,5 @@ class WebApp < Sinatra::Base
         redirect '/'
     end
 end
+
+WebApp.run!
