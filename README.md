@@ -55,12 +55,13 @@ bundle exec ruby app.rb
 Web app is accessible at http://localhost:4567.
 
 ## Features to code
-- makes code independent from database
+- possibility to use SQL database
 - web security
-- translation
+- translation french-english
 - dark theme
 - web to desktop security (token)
 - toogle for authentication or not
-- .env file
 - migrate to my own CSS/JS
 - scripts for install/launch (web, web/desktop, desktop only, linux, windows...)
+- logger
+- unit tests
