@@ -91,5 +91,3 @@ class WebApp < Sinatra::Base
         redirect '/'
     end
 end
-
-WebApp.run!

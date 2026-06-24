@@ -29,5 +29,3 @@ class Desktop
     @app.run
   end
 end
-
-Desktop.new.run

@@ -1,13 +1,15 @@
 require 'open3'
+require 'dotenv'
+require_relative 'app/Webapp'
+require_relative 'app/Desktop'
 
-# Run the first script in a separate process
-pid1 = spawn("bundle exec ruby app/Webapp.rb -o 0.0.0.0 -p 4567")
 
-# Run the second script in a separate process
-pid2 = spawn("bundle exec ruby app/Desktop.rb")
+webapp_thread = Thread.new do
+  WebApp.run!
+end
 
-# Wait for the second script to finish
-Process.wait(pid2)
+desktop = Desktop.new
+desktop.run
 
-# Terminate the first script if the second script finishes first
-Process.kill("TERM", pid1) if Process.getpgid(pid1)
+# When the main thread (desktop) is done, we stop webapp
+webapp_thread.join
