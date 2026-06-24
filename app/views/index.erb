@@ -18,13 +18,7 @@
                         </select>
                     </div>
                     <div class="input-group mb-3">
-                    <input
-                        type="text"
-                        class="form-control"
-                        name="query"
-                        placeholder="Rechercher une bouteille..."
-                        aria-label="Rechercher une bouteille"
-                    >
+                    <%= erb :'_input_field', locals: { name: "query", placeholder: "Rechercher une bouteille...", required: true } %>
                     <button class="btn btn-outline-secondary" type="submit">
                         <i class="bi bi-search"></i> Rechercher
                     </button>
@@ -43,22 +37,10 @@
             <div class="card-body">
                 <form action="/search/add" method="get">
                     <div class="input-group mb-3">
-                        <input
-                            type="text"
-                            class="form-control"
-                            name="appellation"
-                            placeholder="Rentrer l'appellation de la bouteille..."
-                            aria-label="Rentrer l'appellation de la bouteille"
-                        >
+                        <%= erb :'_input_field', locals: { name: "appellation", placeholder: "Rentrer l'appellation de la bouteille...", required: true } %>
                     </div>
                     <div class="input-group mb-3">
-                        <input
-                            type="number"
-                            class="form-control"
-                            name="vintage"
-                            placeholder="Rentrer l'année de la bouteille..."
-
-                        >
+                        <%= erb :'_input_field', locals: { name: "vintage", type: "number", placeholder: "Rentrer l'année de la bouteille...", required: true } %>
                     </div>
                     <button class="btn btn-outline-secondary" type="submit">
                         <i class="bi bi-search"></i> Rechercher

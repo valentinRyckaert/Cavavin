@@ -24,6 +24,14 @@ class WebApp < Sinatra::Base
                 return 1 # Start with ID 1 if the file is empty or doesn't exist
             end
         end
+
+        def action_button_class_and_text(action)
+            if action == "add"
+                { class: "btn-success", text: "ajouter" }
+            else
+                { class: "btn-warning", text: "consommer" }
+            end
+        end
     end
 
     get '/' do

@@ -1,0 +1,11 @@
+<div class="input-group mb-3">
+  <input
+    type="<%= defined?(type) ? type : 'text' %>"
+    class="form-control"
+    name="<%= name %>"
+    placeholder="<%= placeholder %>"
+    <%= defined?(value) ? 'value="' + value.to_s + '"' : '' %>
+    <%= defined?(required) ? 'required' : '' %>
+    <%= defined?(min) ? 'min="' + min.to_s + '"' : '' %>
+  >
+</div>

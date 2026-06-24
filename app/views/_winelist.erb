@@ -1,40 +1,40 @@
 <div class="card mx-5 mt-4">
-    <div class="card-body">
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th scope="col">appearance</th>
-                    <th scope="col">région</th>
-                    <th scope="col">appellation</th>
-                    <th scope="col">estate</th>
-                    <th scope="col">année</th>
-                    <th scope="col">nombre de bouteilles</th>
-                    <th scope="col">actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <% listeVins.each do |wine| %>
-                    <tr>
-                        <td><%= wine.appearance %></td>
-                        <td><%= wine.region %></td>
-                        <td><%= wine.appellation %></td>
-                        <td><%= wine.estate %></td>
-                        <td><%= wine.vintage %></td>
-                        <td><%= wine.nbBottles %></td>
-                        <td>
-                            <form action="/changequantity/<%= action %>" method="post">
-                                <div class="input-group mb-3">
-                                    <input type="number" name="nbBottles" class="form-control" value=1 size=4>
-                                    <button class="btn <%= action == "add" ? 'btn-success' : 'btn-warning'%> btn-sm" id="basic-addon2">
-                                        <%= action == "add" ? 'ajouter' : 'consommer'%>
-                                    </button>
-                                </div>
-                                <input value=<%= wine.id %> name="vinId" type="hidden" />
-                            </form>
-                        </td>
-                    </tr>
-                <% end %>
-            </tbody>
-        </table>
-    </div>
+  <div class="card-body">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">appearance</th>
+          <th scope="col">région</th>
+          <th scope="col">appellation</th>
+          <th scope="col">estate</th>
+          <th scope="col">année</th>
+          <th scope="col">nombre de bouteilles</th>
+          <th scope="col">actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% listeVins.each do |wine| %>
+          <tr>
+            <td><%= wine.appearance %></td>
+            <td><%= wine.region %></td>
+            <td><%= wine.appellation %></td>
+            <td><%= wine.estate %></td>
+            <td><%= wine.vintage %></td>
+            <td><%= wine.nbBottles %></td>
+            <td>
+              <form action="/changequantity/<%= action %>" method="post">
+                <input type="hidden" name="vinId" value="<%= wine.id %>">
+                <div class="input-group mb-3">
+                    <input type="number" name="nbBottles" class="form-control" value="1" size="4">
+                    <button class="btn <%= action_button_class_and_text(action)[:class] %> btn-sm" type="submit">
+                        <%= action_button_class_and_text(action)[:text] %>
+                    </button>
+                </div>
+              </form>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
 </div>
