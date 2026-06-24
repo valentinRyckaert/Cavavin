@@ -37,7 +37,7 @@ class WebApp < Sinatra::Base
                 listeVins.push(wine)
             end
         end
-        erb :index, locals: { action: 'consume', listeVins: listeVins, nouveauVin: nil }
+        erb :index, layout: :layout, locals: { action: 'consume', listeVins: listeVins, nouveauVin: nil }
     end
 
     get '/search/add' do
