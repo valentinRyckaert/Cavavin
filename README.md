@@ -42,16 +42,15 @@ touch database.csv # in the root directory
 
 #### Create .env file
 ```
-DB_PATH="database.csv"
-
-WEBAPP_IP="127.0.0.1"
-WEBAPP_PORT=9292
+LAUNCH_TYPE=desktoponly
+DB_PATH=database.csv
+WEBAPP_IP=127.0.0.1
+WEBAPP_PORT=4567
 ```
 
 #### Launch
 ```shell
-rackup # web app
-ruby app/Desktop.rb # in another shell
+bundle exec ruby app.rb
 ```
 Web app is accessible at http://localhost:4567.
 
