@@ -1,16 +1,19 @@
-<div class="card mx-5 mt-4">
+<div class="card">
+  <div class="card-header">
+    <h2>Nouvelle bouteille</h2>
+  </div>
   <div class="card-body">
-    <h4>Si vous ne trouvez pas votre bouteille parmi celles existantes, ajoutez-en une :</h4>
+    <p>Si vous ne trouvez pas votre bouteille parmi celles existantes, ajoutez-en une :</p>
     <form action="/new" method="post">
+      <div class="fields">
         <%= erb :'_input_field', locals: { name: "appearance", placeholder: "Appearance", required: true } %>
         <%= erb :'_input_field', locals: { name: "region", placeholder: "Région", required: true } %>
         <%= erb :'_input_field', locals: { name: "appellation", placeholder: "Appellation", value: nouveauVin[:appellation], required: true } %>
         <%= erb :'_input_field', locals: { name: "estate", placeholder: "Estate", required: true } %>
         <%= erb :'_input_field', locals: { name: "vintage", type: "number", placeholder: "Année", value: nouveauVin[:vintage], required: true } %>
         <%= erb :'_input_field', locals: { name: "nbBottles", type: "number", placeholder: "Quantité", value: 1, min: 1, required: true } %>
-        <button class="btn btn-outline-success" type="submit">
-            <i class="bi bi-plus-lg"></i> Créer
-        </button>
+      </div>
+      <button class="btn btn-add" type="submit">Créer</button>
     </form>
   </div>
 </div>

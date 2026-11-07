@@ -1,59 +1,46 @@
-<div class="container mt-4">
-    <h1 class="mb-4">Ma Cave à Vin</h1>
-    <div class="row">
+<div class="container">
+    <h1>Ma Cave à Vin</h1>
+    <div class="columns">
         <!-- Colonne gauche : Consommation d'un vin -->
-        <div class="col-md-6">
-        <div class="card mb-4">
-            <div class="card-header bg-primary text-white">
-            <h5>Consommer un vin</h5>
+        <div class="card">
+            <div class="card-header">
+                <h2>Consommer un vin</h2>
             </div>
             <div class="card-body">
                 <form action="/search/consume" method="get">
-                    <div class="input-group mb-3">
-                        <select class="form-select" name="searchType" aria-label="Default select example">
-                            <option value="appellation" selected>rechercher l'appellation</option>
-                            <option value="appearance">rechercher la appearance</option>
-                            <option value="region">rechercher la région</option>
-                            <option value="estate">rechercher le estate</option>
-                        </select>
-                    </div>
-                    <div class="input-group mb-3">
-                    <%= erb :'_input_field', locals: { name: "query", placeholder: "Rechercher une bouteille...", required: true } %>
-                    <button class="btn btn-outline-secondary" type="submit">
-                        <i class="bi bi-search"></i> Rechercher
-                    </button>
+                    <select name="searchType" aria-label="Critère de recherche">
+                        <option value="appellation" selected>rechercher l'appellation</option>
+                        <option value="appearance">rechercher la appearance</option>
+                        <option value="region">rechercher la région</option>
+                        <option value="estate">rechercher le estate</option>
+                    </select>
+                    <div class="inline">
+                        <%= erb :'_input_field', locals: { name: "query", placeholder: "Rechercher une bouteille...", required: true } %>
+                        <button class="btn" type="submit">Rechercher</button>
                     </div>
                 </form>
             </div>
-        </div>
         </div>
 
         <!-- Colonne droite : Ajouter un vin -->
-        <div class="col-md-6">
         <div class="card">
-            <div class="card-header bg-success text-white">
-            <h5>Ajouter une bouteille</h5>
+            <div class="card-header">
+                <h2>Ajouter une bouteille</h2>
             </div>
             <div class="card-body">
                 <form action="/search/add" method="get">
-                    <div class="input-group mb-3">
-                        <%= erb :'_input_field', locals: { name: "appellation", placeholder: "Rentrer l'appellation de la bouteille...", required: true } %>
-                    </div>
-                    <div class="input-group mb-3">
-                        <%= erb :'_input_field', locals: { name: "vintage", type: "number", placeholder: "Rentrer l'année de la bouteille...", required: true } %>
-                    </div>
-                    <button class="btn btn-outline-secondary" type="submit">
-                        <i class="bi bi-search"></i> Rechercher
-                    </button>
+                    <%= erb :'_input_field', locals: { name: "appellation", placeholder: "Rentrer l'appellation de la bouteille...", required: true } %>
+                    <%= erb :'_input_field', locals: { name: "vintage", type: "number", placeholder: "Rentrer l'année de la bouteille...", required: true } %>
+                    <button class="btn" type="submit">Rechercher</button>
                 </form>
             </div>
         </div>
-        </div>
     </div>
+
+    <% if listeVins != nil %>
+        <%= erb :'_winelist', locals: { listeVins: listeVins, action: action } %>
+    <% end %>
+    <% if action === 'add' %>
+        <%= erb :'_addwine', locals: { nouveauVin: nouveauVin } %>
+    <% end %>
 </div>
-<% if listeVins != nil %>
-    <%= erb :'_winelist', locals: { listeVins: listeVins, action: action } %>
-<% end %>
-<% if action === 'add' %>
-    <%= erb :'_addwine', locals: { nouveauVin: nouveauVin } %>
-<% end %>

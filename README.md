@@ -54,6 +54,14 @@ bundle exec ruby app.rb
 ```
 Web app is accessible at http://localhost:4567.
 
+## Release
+
+Pushing a `vX.Y.Z` tag runs `.github/workflows/release.yml`, which attaches to a GitHub release:
+- `Cavavin-x86_64.AppImage`: desktop app (GTK/WebKit embedded). `database.csv` is created in the launch directory.
+- `Cavavin.exe`: WebKitGTK does not exist on Windows, so the exe runs in web mode: open http://localhost:4567 in a browser. `database.csv` and the optional `.env` live next to the exe.
+
+Without a `.env`, defaults are `DB_PATH=database.csv`, `WEBAPP_IP=127.0.0.1`, `WEBAPP_PORT=4567` and `LAUNCH_TYPE=webonly` on Windows / `desktoponly` elsewhere.
+
 ## Features to code
 - possibility to use SQL database
 - web security
@@ -61,7 +69,7 @@ Web app is accessible at http://localhost:4567.
 - dark theme
 - web to desktop security (token)
 - toogle for authentication or not
-- migrate to my own CSS/JS
+- .env file
 - scripts for install/launch (web, web/desktop, desktop only, linux, windows...)
 - logger
 - unit tests
