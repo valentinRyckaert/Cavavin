@@ -16,6 +16,11 @@ class WebApp < Sinatra::Base
 
     helpers do
 
+        # ERB n'échappe rien par défaut : toute donnée venant de l'utilisateur ou du CSV passe par h()
+        def h(text)
+            Rack::Utils.escape_html(text.to_s)
+        end
+
         def get_new_id
             if File.exist?(ENV["DB_PATH"]) && !File.empty?(ENV["DB_PATH"])
                 last_row = CSV.read(ENV["DB_PATH"], headers: true, skip_blanks: true).to_a.last
@@ -27,11 +32,16 @@ class WebApp < Sinatra::Base
 
         def action_button_class_and_text(action)
             if action == "add"
-                { class: "btn-success", text: "ajouter" }
+                { class: "btn-add", text: "ajouter" }
             else
-                { class: "btn-warning", text: "consommer" }
+                { class: "btn-consume", text: "consommer" }
             end
         end
+    end
+
+    # l'image de fond vit à la racine du projet, hors du dossier public de Sinatra
+    get '/background.jpg' do
+        send_file File.expand_path('../background.jpg', __dir__)
     end
 
     get '/' do

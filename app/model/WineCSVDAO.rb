@@ -28,7 +28,7 @@ class WineCSVDAO
 		if existing_row_index
 			rows[existing_row_index]["nbBottles"] = wine.nbBottles.to_s
 		else
-			rows << CSV::Row.new(wine.attributes)
+			rows << CSV::Row.new(wine.attributes.keys, wine.attributes.values)
 		end
 
 		CSV.open(@dBpath, "wb") do |csv|
@@ -69,7 +69,7 @@ class WineCSVDAO
 			if File.exist?(@dBpath)
 				CSV.read(@dBpath, headers: true, skip_blanks: true)
 			else
-				[]
+				CSV::Table.new([])
 			end
 		end
 

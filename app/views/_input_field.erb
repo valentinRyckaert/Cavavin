@@ -1,10 +1,10 @@
-<div class="input-group mb-3">
+<div class="field">
   <input
     type="<%= defined?(type) ? type : 'text' %>"
-    class="form-control"
     name="<%= name %>"
-    placeholder="<%= placeholder %>"
-    <%= defined?(value) ? 'value="' + value.to_s + '"' : '' %>
+    placeholder="<%= h placeholder %>"
+    aria-label="<%= h placeholder %>"
+    <%= defined?(value) ? 'value="' + h(value) + '"' : '' %>
     <%= defined?(required) ? 'required' : '' %>
     <%= defined?(min) ? 'min="' + min.to_s + '"' : '' %>
   >
