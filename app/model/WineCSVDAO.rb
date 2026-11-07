@@ -41,11 +41,8 @@ class WineCSVDAO
 
 
   def remove(id)
-		rows = []
-
-		self.dbData.each do |row|
-			rows << row unless row["id"].to_i == id
-		end
+		rows = self.dbData
+		rows.delete_if { |row| row["id"].to_i == id }
 
 		CSV.open(@dBpath, "wb") do |csv|
 			csv << rows.headers unless rows.empty?

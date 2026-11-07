@@ -1,4 +1,3 @@
-require 'bundler/setup'
 require 'sinatra'
 require 'csv'
 require_relative 'model/WineCSVDAO'
@@ -81,7 +80,11 @@ class WebApp < Sinatra::Base
                 wine.nbBottles = action == "add" ? 
                     wine.nbBottles.to_i + params["nbBottles"].to_i :
                     wine.nbBottles.to_i - params["nbBottles"].to_i
-                settings.WineDAO.createOrUpdate(wine)
+                if wine.nbBottles <= 0
+                    settings.WineDAO.remove(wine.id)
+                else
+                    settings.WineDAO.createOrUpdate(wine)
+                end
             end
         end
         redirect '/'

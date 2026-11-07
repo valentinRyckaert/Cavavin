@@ -1,4 +1,5 @@
-require 'bundler/setup'
+# dans le .exe, ocran fournit déjà les gems embarquées : Bundler n'y sert à rien et y plante
+require 'bundler/setup' unless ENV["OCRAN_EXECUTABLE"]
 require 'open3'
 require 'dotenv'
 

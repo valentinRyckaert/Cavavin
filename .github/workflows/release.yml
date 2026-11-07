@@ -30,6 +30,27 @@ jobs:
       # --gem-all / --add-all-core : puma, rack et tilt chargent du code à la volée que l'analyse ne voit pas
       - run: ocran app.rb app background.jpg --gemfile Gemfile --gem-all --add-all-core --chdir-exe-dir --console --output Cavavin.exe
 
+      # le build peut réussir avec un exe qui plante au lancement : on le démarre vraiment,
+      # depuis un dossier vierge et depuis le dépôt (qui contient un Gemfile)
+      - name: Smoke test
+        shell: pwsh
+        run: |
+          $fresh = New-Item -ItemType Directory "$env:RUNNER_TEMP\smoke"
+          Copy-Item Cavavin.exe $fresh
+          foreach ($dir in @($fresh.FullName, $env:GITHUB_WORKSPACE)) {
+            $p = Start-Process "$dir\Cavavin.exe" -WorkingDirectory $dir -PassThru `
+              -RedirectStandardOutput "$env:RUNNER_TEMP\out.log" -RedirectStandardError "$env:RUNNER_TEMP\err.log"
+            $ok = $false
+            for ($i = 0; $i -lt 60 -and -not $p.HasExited; $i++) {
+              Start-Sleep 2
+              try { $ok = (Invoke-WebRequest http://localhost:4567 -UseBasicParsing).Content -match 'Ma Cave' } catch {}
+              if ($ok) { break }
+            }
+            Stop-Process -Id $p.Id -Force -ErrorAction SilentlyContinue
+            Get-Process ruby -ErrorAction SilentlyContinue | Stop-Process -Force
+            if (-not $ok) { Get-Content "$env:RUNNER_TEMP\out.log", "$env:RUNNER_TEMP\err.log"; throw "Cavavin.exe ne répond pas (lancé depuis $dir)" }
+          }
+
       - uses: actions/upload-artifact@v4
         with:
           name: windows
@@ -67,7 +88,29 @@ jobs:
       # packaging<22 : appimage-builder 1.1.0 utilise packaging.version.LegacyVersion
       - run: pip install appimage-builder==1.1.0 'packaging<22'
 
-      - run: appimage-builder --recipe .github/AppImageBuilder.yml --skip-test
+      - run: appimage-builder --recipe .github/AppImageBuilder.yml --skip-tests --skip-appimage
+
+      # appimage-builder range libcrypt avec la glibc dans runtime/compat, utilisé seulement si la glibc
+      # de l'hôte est plus vieille ; or les distros récentes (Arch, Fedora) n'ont plus libcrypt.so.1
+      - run: find AppDir/runtime/compat -name 'libcrypt.so.1*' -exec cp -a {} AppDir/usr/lib/x86_64-linux-gnu/ \; && test -e AppDir/usr/lib/x86_64-linux-gnu/libcrypt.so.1
+
+      - run: appimage-builder --recipe .github/AppImageBuilder.yml --skip-script --skip-build --skip-tests
+
+      # lancement réel sur Arch (sans libcrypt.so.1 ni Ruby), depuis un dossier vierge
+      - name: Smoke test
+        run: |
+          docker run --rm -v "$PWD:/w" archlinux:latest bash -euo pipefail -c '
+            pacman -Sy --noconfirm --needed xorg-server-xvfb xorg-xauth dbus > /dev/null
+            export APPIMAGE_EXTRACT_AND_RUN=1
+            cd "$(mktemp -d)"
+            LAUNCH_TYPE=webonly /w/Cavavin-x86_64.AppImage > web.log 2>&1 &
+            for i in $(seq 30); do curl -sf localhost:4567 | grep -q "Ma Cave" && break; sleep 2; done
+            curl -sf localhost:4567 | grep -q "Ma Cave" || { cat web.log; exit 1; }
+            kill $!; pkill -f app.rb || true; sleep 2
+            # mode desktop : doit toujours tourner au bout de 20 s (timeout renvoie alors 124)
+            rc=0; timeout 20 dbus-run-session -- xvfb-run -a /w/Cavavin-x86_64.AppImage > desktop.log 2>&1 || rc=$?
+            [ "$rc" = 124 ] || { cat desktop.log; exit 1; }
+          '
 
       - uses: actions/upload-artifact@v4
         with:
